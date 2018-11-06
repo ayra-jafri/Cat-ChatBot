@@ -1,12 +1,7 @@
-------------------------------------------------------------------------
-This is the project README file. Here, you should describe your project.
-Tell the reader (someone who does not know anything about this project)
-all he/she needs to know. The comments should usually include at least:
-------------------------------------------------------------------------
-
-PROJECT TITLE:
-PURPOSE OF PROJECT:
-VERSION or DATE:
-HOW TO START THIS PROJECT:
-AUTHORS:
-USER INSTRUCTIONS:
+---------------------------------------------------------------------------------------~~
+PROJECT TITLE: PLTW 1.1.6 Chatting with Magpie
+PURPOSE OF PROJECT: School assignment; experiemnt with basic AI and chatbots
+VERSION or DATE: 11/5/18 (completed)
+HOW TO START THIS PROJECT: Run in BlueJ, or download BlueJ and click on package.bluej
+AUTHOR: Ayra Jafri
+---------------------------------------------------------------------------------------~~
