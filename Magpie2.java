@@ -208,7 +208,7 @@ public class Magpie2
         statement = statement.trim();
         String lastChar = statement.substring(statement
                 .length() - 1);
-        if (lastChar.equals("."))
+        if (lastChar.equals(".") || lastChar.equals("!"))
         {
             statement = statement.substring(0, statement
                     .length() - 1);
@@ -221,19 +221,30 @@ public class Magpie2
     private String transformIWantToStatement(String statement)
     {
         //  Remove the final period, if there is one
+        boolean IWantYou = false;
+        String statementNoYou = "";
         statement = statement.trim();
         String lastChar = statement.substring(statement
                 .length() - 1);
-        if (lastChar.equals("."))
+        if (lastChar.equals(".") || lastChar.equals("!"))
         {
             statement = statement.substring(0, statement
                     .length() - 1);
         }
         int psn = findKeyword (statement, "I want to", 0);
         String restOfStatement = statement.substring(psn + 9).trim();
+        String restOfStatementWant = statement.substring(psn + 2).trim();
+        if(restOfStatement.contains("you")){
+            statementNoYou = restOfStatementWant.substring(0, restOfStatementWant
+                    .length() - 4);
+            IWantYou = true;
+        }
+        
+        if(IWantYou == true){
+            return "Why do you " + statementNoYou + " me?";
+        }
         return "What would it mean to " + restOfStatement + "?";
     }
-    
     /**
      * Take a statement with "you <something> me" and transform it into 
      * "What makes you think that I <something> you?"
@@ -246,7 +257,7 @@ public class Magpie2
         statement = statement.trim();
         String lastChar = statement.substring(statement
                 .length() - 1);
-        if (lastChar.equals("."))
+        if (lastChar.equals(".") || lastChar.equals("!"))
         {
             statement = statement.substring(0, statement.length() - 1);
         }
@@ -263,7 +274,7 @@ public class Magpie2
         //  Remove the final period, if there is one
         statement = statement.trim();
         String lastChar = statement.substring(statement.length() - 1);
-        if (lastChar.equals("."))
+        if (lastChar.equals(".") || lastChar.equals("!"))
         {
             statement = statement.substring(0, statement
                     .length() - 1);
@@ -281,7 +292,7 @@ public class Magpie2
         //  Remove the final period, if there is one
         statement = statement.trim();
         String lastChar = statement.substring(statement.length() - 1);
-        if (lastChar.equals("."))
+        if (lastChar.equals(".") || lastChar.equals("!"))
         {
             statement = statement.substring(0, statement
                     .length() - 1);
