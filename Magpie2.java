@@ -1,3 +1,11 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Properties;
+
 /**
  * A program to carry on conversations with a human user.
  * This is the initial version that:  
@@ -13,6 +21,7 @@
  */
 public class Magpie2
 {
+    int owo = 0;
     /**
      * Get a default greeting 
      * 
@@ -20,7 +29,7 @@ public class Magpie2
      */
     public String getGreeting()
     {
-        return "Hello, let's talk.";
+        return "Hello there!";
     }
     
     /**
@@ -30,18 +39,29 @@ public class Magpie2
      *            the user statement
      * @return a response based on the rules given
      */
-    public String getResponse(String statement)
+    public String getResponse(String statement) throws IOException
     {
         String response = "";
         String s = statement.trim();
-        if(s.length() < 1)
+        if(s.length() < 0)
         {
-            response = "Say something, please.";
+          final int NUMBER_OF_RESPONSES = 1;
+          double r = Math.random();
+          int whichResponse = (int)(r * NUMBER_OF_RESPONSES);
+          response = "";
+          if(whichResponse == 0)
+          {
+            response = "Hmm, I don’t quite understand you right meow.";
+          }
+          else if(whichResponse == 1)
+          {
+            response = "Cat got your tongue?";
+          }
         }
         
         else if (findKeyword(statement, "no") >= 0)
         {
-            response = "Why so negative?";
+            response = "You should be more paw-sitive,";
         }
         else if (findKeyword(statement, "mother") >= 0
         || findKeyword(statement, "father") >= 0
@@ -51,7 +71,6 @@ public class Magpie2
             response = "Tell me more about your family.";
         }
         else if (findKeyword(statement, "dog") >= 0
-        || findKeyword(statement, "cat") >= 0
         || findKeyword(statement, "pet") >= 0
         || findKeyword(statement, "pets") >= 0
         || findKeyword(statement, "rabbit") >= 0
@@ -59,7 +78,27 @@ public class Magpie2
         {
             response = "Tell me more about your pets.";
         }
+        else if (findKeyword(statement, "cat") >= 0 && findKeyword(statement, "best") >= 0 && findKeyword(statement, "not") < 0)
+        {
+            response = "I love cats! They’re quite fluffy and easy to hug (sometimes)!";
+        }
+        else if (findKeyword(statement, "cat") >= 0 && findKeyword(statement, "best") >= 0 && findKeyword(statement, "not") >= 0)
+        {
+            response = "Ah. Well, to each their own, I suppose. But then again, what are you doing with a cat loving chatbot?";
+        }
+        else if (findKeyword(statement, "Do you like cats") >= 0 && findKeyword(statement, "not") < 0 )
+        {
+            response = "I do, but I’m actually allergic, haha. Plus, the fact that I have no physical body, or mind, or real consciousness, or free will probably also has something to do with it.";
+        }
+        else if (findKeyword(statement, "General Kenobi") >= 0)
+        {
+            response = "You are a bold one.";
+        }
         
+        else if(findKeyword(statement, "cat") >= 0)
+        {
+            response = "Wow! Tell me more about cats! I just love cats!";
+        }
         else if (findKeyword(statement, "Kaehms") >= 0)
         {
             response = "Wow, he sounds like a nice guy! Tell me more.";
@@ -70,26 +109,46 @@ public class Magpie2
         }
         else if (findKeyword(statement, "haha") >= 0)
         {
-            response = ":D\nThat's pretty funny!";
+            response = ":D\nThat's purr-ty funny!";
+        }
+        else if (findKeyword(statement, "oWo") >= 0 && owo == 0)
+        {
+            owo++;
+            response = "No. Stop.\n\n\nDon't do that again, or else I'm leaving."; 
+        }
+        else if (findKeyword(statement, "owo") >= 0 && owo == 1)
+        {
+            owo++;
+            response = "This is your final warning, purr-tner.";
+        }
+        else if (findKeyword(statement, "owo") >= 0 && owo == 2)
+        {
+            owo++;
+            response = "Goodbye.";
+            //MagpieRunner2.programEnd = true;
         }
         else if (findKeyword(statement, "meow") >= 0)
         {
-            response = "Ah, I'm afraid I can't speak cat.";
+            response = "Ah, I'm afraid I can't speak cat. Yet.";
         }
         else if (findKeyword(statement, "anime") >= 0)
         {
-            response = "...\n...\n...\nI'm not into anime, sorry.\n\n\nI'm not a weeb smh.";
+            response = "...\n...\n...\nI'm not into anime, sorry.";
         }
         else if (findKeyword(statement, "sad") >=0
                 || findKeyword(statement, ":(") >= 0){
             response = ":(";
         }
-        
+        else if (findKeyword(statement, "You already") >= 0)
+        {
+            response = transformYouAlready(statement);
+        }
         else if (findKeyword(statement, "lenny") >=0
                 || findKeyword(statement, "( ͡° ͜ʖ ͡°)") >= 0
                 || findKeyword(statement, "lenny face") >= 0){
             response = "( ͡° ͜ʖ ͡°)\t( ͡° ͜ʖ ͡°)";
         }
+      
         // Responses which require transformations
         else if (findKeyword(statement, "I want", 0) >= 0 && findKeyword(statement, "I want to", 0) < 0)
         {
@@ -99,6 +158,12 @@ public class Magpie2
         else if (findKeyword(statement, "I want to", 0) >= 0)
         {
             response = transformIWantToStatement(statement);
+        }
+        
+        else if ( findKeyword(statement, "fact", 0) >= 0 && (((findKeyword(statement, "not", 0) <= -1 
+        || findKeyword(statement, "no", 0) <= -1))) )
+        {
+            response = fact(statement);
         }
         
         else
@@ -206,8 +271,7 @@ public class Magpie2
     {
         //  Remove the final period, if there is one
         statement = statement.trim();
-        String lastChar = statement.substring(statement
-                .length() - 1);
+        String lastChar = statement.substring(statement.length() - 1);
         if (lastChar.equals(".") || lastChar.equals("!"))
         {
             statement = statement.substring(0, statement
@@ -297,12 +361,43 @@ public class Magpie2
             statement = statement.substring(0, statement
                     .length() - 1);
         }
-        
         int psnOfYou = findKeyword (statement, "I am", 0);
         int psnOfMe = findKeyword (statement, "you", psnOfYou + 4);
         
         String restOfStatement = statement.substring(psnOfYou + 4, psnOfMe).trim();
         return "Why are you " + restOfStatement + " me?";
+    }
+    
+    private String transformYouAlready(String statement)
+    {
+        statement = statement.trim();
+        String lastChar = statement.substring(statement.length() - 1);
+        if (lastChar.equals(".") || lastChar.equals("!") || lastChar.equals("?"))
+        {
+            statement = statement.substring(0, statement
+                    .length() - 1);
+        }
+        int psnOfYouAlready = findKeyword(statement, "You already", 0);
+        String restOfStatement = statement.substring(psnOfYouAlready + 11, statement.length());
+        return "Oh, I already " + restOfStatement + "? My a-paw-logies, I'm very forgetful.";      
+    }
+
+    private String fact(String statement) throws IOException
+    {
+        // Make a URL to the web page
+        URL url = new URL("https://catfact.ninja/fact");
+        // Get the input stream through URL Connection
+        URLConnection con = url.openConnection();
+        InputStream is = con.getInputStream();
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        String line = null;
+        line = br.readLine();
+        
+        int psnOfFact = findKeyword (line, "\\{\"fact\":", 0);
+        int psnOfLength = findKeyword (line, "\"length\"", line.length() - 16);
+        
+        String restOfStatement = line.substring(psnOfFact + 9, psnOfLength);
+        return restOfStatement;
     }
     
     /**
@@ -330,7 +425,7 @@ public class Magpie2
      */
     private String getRandomResponse()
     {
-        final int NUMBER_OF_RESPONSES = 4;
+        final int NUMBER_OF_RESPONSES = 6;
         double r = Math.random();
         int whichResponse = (int)(r * NUMBER_OF_RESPONSES);
         String response = "";
@@ -351,6 +446,26 @@ public class Magpie2
         {
             response = "You don't say.";
         }
+        else if (whichResponse == 4)
+        {
+            response = "Paw-lease tell me more."; 
+        }
+        else if (whichResponse == 5)
+        {
+            response = "Ah, I see. That's purr-ty fascinating";
+        }
+        else if (whichResponse == 6)
+        {
+            response = "Uh huh, I see, yes.";
+        }
+        else if (whichResponse == 7)
+        {
+            response = "That sounds a-meow-zing. Tell me more.";
+        }
         return response;
     }
 }
+
+
+
+
