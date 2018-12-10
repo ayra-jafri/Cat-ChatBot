@@ -107,13 +107,21 @@ public class Magpie2
         }
         else if(findKeyword(statement, "hello") >= 0 || findKeyword(statement, "hi") >= 0 || findKeyword(statement, "hey") >= 0
         || findKeyword(statement, "what's up") >= 0 || findKeyword(statement, "hoi") >= 0 || findKeyword(statement, "heyo") >= 0
-        || findKeyword(statement, "hiyo") >= 0)
+        || findKeyword(statement, "hiyo") >= 0 || findKeyword(statement, "yo") >= 0)
         {
             response = "Hey there! How's it going right meow?";
         }
         else if (findKeyword(statement, "Kaehms") >= 0)
         {
             response = "Wow, he sounds purr-ty nice! Tell me more.";
+        }
+        else if (findKeyword(statement, "How are you") >= 0)
+        {
+            response = "I am doing purr-fectly fine, I think. What about you?";
+        }
+        else if (findKeyword(statement, "no u") >= 0)
+        {
+            response = "no u";
         }
         else if (findKeyword(statement, "weather") >= 0)
         {
@@ -125,7 +133,7 @@ public class Magpie2
         }
         else if (findKeyword(statement, "kill yourself") >= 0 || findKeyword(statement, "go die") >= 0 || findKeyword(statement, "kys") >= 0 || findKeyword(statement, "shut up") >= 0)
         {
-            response = "That's not nice. I'm gonna ignore you.";
+            response = "That's not nice. 3:<";
             oWo = oWo + 3;
         }
         else if (findKeyword(statement, "oWo") >= 0 && oWo == 0)
@@ -143,9 +151,10 @@ public class Magpie2
             response = "This is your last warning."; 
             oWo++;
         }
-        else if (findKeyword(statement, "meow") >= 0)
+        else if (findKeyword(statement, "meow") >= 0 || findKeyword(statement, "nya") >= 0 
+        || findKeyword(statement, "mew") >= 0)
         {
-            response = "Ah, I'm afraid I can't speak cat. Yet.";
+            response = "Ah, I'm afraid I can't speak cat.";
         }
         else if (findKeyword(statement, "anime") >= 0)
         {
@@ -213,11 +222,13 @@ public class Magpie2
             response = transformIWantToStatement(statement);
         }
         
-        else if (findKeyword(statement, "Are you") >= 0 && findKeyword(statement, "me") < 0)
+        else if (findKeyword(statement, "Are you") >= 0 && findKeyword(statement, "me") < 0
+                 && findKeyword(statement, "how") < 0)
         {
             response = transformAreYou(statement);
         }
-        else if (findKeyword(statement, "Are you") >= 0 && findKeyword(statement, "me") >= 0)
+        else if (findKeyword(statement, "Are you") >= 0 && findKeyword(statement, "me") >= 0 
+                 && findKeyword(statement, "how") < 0)
         {
             response = transformAreYouMe(statement);
         }
@@ -686,6 +697,18 @@ public class Magpie2
         else if (whichResponse == 9)
         {
             response = "What else would you like to say?";
+        }
+        else if (whichResponse == 10)
+        {
+            response = "That is purr-ty interesting.";
+        }
+        else if (whichResponse == 11)
+        {
+            response = "Fur real? Wowza!";
+        }
+        else if (whichResponse == 12)
+        {
+            response = "I see. How curious.";
         }
         return response;
     }

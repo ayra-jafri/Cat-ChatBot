@@ -6,7 +6,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Properties;
 import java.util.*;
-import java.util.ArrayList;
 
 /**
  * A simple class to run the Magpie class.
