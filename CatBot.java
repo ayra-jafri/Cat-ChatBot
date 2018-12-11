@@ -879,13 +879,17 @@ public class CatBot
         line = br.readLine();
         
         int psnOfFact = findKeyword (line, "\\{\"fact\":", 0);
-        int psnOfLength = findKeyword (line, "\"length\"", line.length() - 15);
         
         String restOfStatement = line.substring(psnOfFact + 10, line.length() - 14);
         restOfStatement = restOfStatement.replaceAll("[\\\\]","");
         return restOfStatement;
     }
     
+    /**
+     * Retrieves a random cat image or gif from http://aws.random.cat/meow (an API)
+     * @param statement the user statement, assumed to contain "pic" (or some synonym) and "cat"
+     * @return the transformed statement
+     */
     private String catPic() throws IOException
     {
         // Make a URL to the web page
@@ -898,8 +902,6 @@ public class CatBot
         line = br.readLine();
         
         int psnOfFact = findKeyword (line, "\\{\"file\":", 0);
-        int psnOfLength = findKeyword (line, "\"length\"", line.length() - 2);
-        
         
         String restOfStatement = line.substring(psnOfFact + 10, line.length() - 2);
         restOfStatement = restOfStatement.replaceAll("[\\\\]","");
@@ -920,7 +922,7 @@ public class CatBot
        int whichResponse = (int)(r * (jokes.size()-1));
        
        String response = jokes.get(whichResponse);
-       return "Here's a purr-fectly fine joke!\n\n" + response;
+       return "I don't know too many jokes, but here's a purr-fectly fine joke!\n\n" + response;
     }
     
     /**

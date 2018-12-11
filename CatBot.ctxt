@@ -44,6 +44,7 @@ comment21.target=java.lang.String\ fact()
 comment21.text=\r\n\ Retrieves\ a\ random\ cat\ fact\ from\ catfat.ninja/fact\ (an\ API)\r\n\ @param\ statement\ the\ user\ statement,\ assumed\ to\ contain\ "fact"\r\n\ @return\ the\ transformed\ statement\r\n
 comment22.params=
 comment22.target=java.lang.String\ catPic()
+comment22.text=\r\n\ Retrieves\ a\ random\ cat\ image\ or\ gif\ from\ http\://aws.random.cat/meow\ (an\ API)\r\n\ @param\ statement\ the\ user\ statement,\ assumed\ to\ contain\ "pic"\ (or\ some\ synonym)\ and\ "cat"\r\n\ @return\ the\ transformed\ statement\r\n
 comment23.params=
 comment23.target=java.lang.String\ joke()
 comment23.text=\r\n\ Retrieves\ a\ random\ cat\ joke\ from\ an\ arraylist\ of\ jokes\r\n\ There\ was\ no\ API\ available\ for\ cat\ jokes,\ sadly,\ so\ the\ number\ of\ jokes\ in\ the\ list\ are\ limited.\r\n\ @param\ statement\ the\ user\ statement,\ assumed\ to\ contain\ "joke"\r\n\ @return\ the\ transformed\ statement\r\n
