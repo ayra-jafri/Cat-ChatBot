@@ -151,7 +151,7 @@ public class CatBot
         randResponses.add("Do you really think so? Why?");
         randResponses.add("You don't say.");
         randResponses.add("Paw-lease tell me more.");
-        randResponses.add("Ah, I see. That is purr-ty fascinating");
+        randResponses.add("Ah, I see. That is purr-ty fascinating.");
         randResponses.add("Uh huh, I see, yes.");
         randResponses.add("That sounds a-meow-zing.");
         randResponses.add("Mmmhmm, I see.");
@@ -517,7 +517,7 @@ public class CatBot
     
     /**
      * Take a statement with "I want <something>." and transform it into 
-     * "Would you really be happy if you had <statement> ?"
+     * "Would you really be happy if you had <something> ?"
      * @param statement the user statement, assumed to contain "I want to"
      * @return the transformed statement
      */
@@ -539,7 +539,7 @@ public class CatBot
     
     /**
      * Take a statement with "I want <something>" and transforms it into:
-     * "What would it mean to <something> you?" or "Why do you <something> me?"
+     * "What would it mean to <something>?" or "Why do you <something> me?"
      * depending on whether the statement also contains a "you" at the end.
      * @param statement the user statement, assumed to contain "I want" followed by "me" or nothing.
      * @return the transformed statement
@@ -619,7 +619,7 @@ public class CatBot
     
     /**
      * Take a statement with "Do you <something>?" and transform it into 
-     * "What makes you think that I <something>? Just wondering."
+     * "What makes you think that I <something>?"
      * @param statement the user statement, assumed to contain "do you".
      * @return the transformed statement
      */
@@ -640,7 +640,7 @@ public class CatBot
     
     /**
      * Take a statement with "Do you <something> me" and transform it into 
-     * "What makes you think that I <something> you? Just wondering."
+     * "What makes you think that I <something> you?"
      * @param statement the user statement, assumed to contain "do you" followed by "me"
      * @return the transformed statement
      */
@@ -793,7 +793,7 @@ public class CatBot
 
     /**
      * Take a statement with "Why are <something>?" and transform it into 
-     * "You want to know why <something>? I'm not sure; tell me! Or google it; here's a link you can copy and paste:\n <link>" 
+     * "<something>? I'm not sure; tell me! Or google it; here's a link you can copy and paste:\n <link>" 
      * @param statement the user statement, assumed to contain "why are".
      * @return the transformed statement
      */
@@ -806,8 +806,8 @@ public class CatBot
             statement = statement.substring(0, statement
                     .length() - 1);
         }
-        int psnOfHowDoYou = findKeyword(statement, "why are", 0);
-        String restOfStatement = statement.substring(psnOfHowDoYou + 7, statement.length());
+        int psnOfWhyAre = findKeyword(statement, "why are", 0);
+        String restOfStatement = statement.substring(psnOfWhyAre + 7, statement.length());
         return statement + "? I'm not sure; tell me!\nOr google it; here's a link you can copy and paste:\n" + "https://www.google.com/search?q=" + statement;      
     }
     
@@ -846,8 +846,8 @@ public class CatBot
             statement = statement.substring(0, statement
                     .length() - 1);
         }
-        int psnOfHowDoYou = findKeyword(statement, "you are", 0);
-        String restOfStatement = statement.substring(psnOfHowDoYou + 7, statement.length());
+        int psnOfYouAre = findKeyword(statement, "you are", 0);
+        String restOfStatement = statement.substring(psnOfYouAre + 7, statement.length());
         return "Why do you think that I am" + restOfStatement + "?";      
     }
     
