@@ -218,7 +218,9 @@ public class CatBot
         }
         else if(findKeyword(statement, "cat") >= 0 && findKeyword(statement, "joke") < 0
                 && findKeyword(statement, "what is") < 0 && findKeyword(statement, "what are") < 0
-                && findKeyword(statement, "do you") < 0)
+                && findKeyword(statement, "do you") < 0 && findKeyword(statement, "pic") < 0
+                && findKeyword(statement, "picture") < 0 && findKeyword(statement, "photo") < 0
+                && findKeyword(statement, "image") < 0 && findKeyword(statement, "gif") < 0)
         {
             response = staticResponses.get(7);
         }
@@ -316,9 +318,16 @@ public class CatBot
         */
         else if (findKeyword(statement, "fact", 0) >= 0 
         && (findKeyword(statement, "not", 0) < 0 
-        || findKeyword(statement, "no", 0) < 0))
+        || findKeyword(statement, "no", 0) < 0) || findKeyword(statement, "I am bored", 0) >= 0
+        || findKeyword(statement, "I'm bored", 0) >= 0)
         {
             response = fact();
+        }
+        else if(findKeyword(statement, "cat") >= 0 && (findKeyword(statement, "pic") >= 0
+                || findKeyword(statement, "picture") >= 0 || findKeyword(statement, "photo") >= 0
+                || findKeyword(statement, "image") >= 0 || findKeyword(statement, "gif") >= 0))
+        {
+            response = catPic();
         }
         else if (findKeyword(statement, "joke", 0) >= 0 && (findKeyword(statement, "not", 0) < 0 
         || findKeyword(statement, "no", 0) < 0) /*&& jokeFlag == false*/)
@@ -378,7 +387,7 @@ public class CatBot
         }
         else if (findKeyword(statement, "what is the", 0) >= 0)
         {
-            response = transformWhatIsThe(statement);
+            response = transformWhatIs(statement);
         }
         else if (findKeyword(statement, "Are you") >= 0 && findKeyword(statement, "me") < 0
                  && findKeyword(statement, "how") < 0)
@@ -839,7 +848,7 @@ public class CatBot
      * @param statement the user statement, assumed to contain "what is the".
      * @return the transformed statement
      */
-    private String transformWhatIsThe(String statement)
+    private String transformWhatIs(String statement)
     {
         statement = statement.trim();
         String lastChar = statement.substring(statement.length() - 1);
@@ -850,7 +859,7 @@ public class CatBot
         }
         int psnOfHowDoYou = findKeyword(statement, "what is the", 0);
         String restOfStatement = statement.substring(psnOfHowDoYou + 11, statement.length());
-        return "You want to what is the" + restOfStatement + "? Try googling it; here's a link you can copy and paste:\n" + "https://www.google.com/search?q=" + restOfStatement;      
+        return "You want to what is " + restOfStatement + "? Try googling it; here's a link you can copy and paste:\n" + "https://www.google.com/search?q=" + restOfStatement;      
     }
     
     /**
@@ -873,7 +882,29 @@ public class CatBot
         int psnOfLength = findKeyword (line, "\"length\"", line.length() - 15);
         
         String restOfStatement = line.substring(psnOfFact + 10, line.length() - 14);
+        restOfStatement = restOfStatement.replaceAll("[\\\\]","");
         return restOfStatement;
+    }
+    
+    private String catPic() throws IOException
+    {
+        // Make a URL to the web page
+        URL url = new URL("http://aws.random.cat/meow");
+        // Get the input stream through URL Connection
+        URLConnection con = url.openConnection();
+        InputStream is = con.getInputStream();
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        String line = null;
+        line = br.readLine();
+        
+        int psnOfFact = findKeyword (line, "\\{\"file\":", 0);
+        int psnOfLength = findKeyword (line, "\"length\"", line.length() - 2);
+        
+        
+        String restOfStatement = line.substring(psnOfFact + 10, line.length() - 2);
+        restOfStatement = restOfStatement.replaceAll("[\\\\]","");
+
+        return "Here's a link to a cat pic (or gif!):\n " + restOfStatement + "\nAs far as I know, it's im-paw-sible to output images to the console 3: .";
     }
     
     /**
