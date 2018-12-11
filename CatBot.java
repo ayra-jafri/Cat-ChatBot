@@ -37,7 +37,7 @@ public class CatBot
      */
     public String getGreeting()
     {
-        return "Hello there!";
+        return "\n\n\n-------------------------------------------------------------------------------------------\nHello there!";
     }
     
     public static void addToList(){
@@ -234,7 +234,7 @@ public class CatBot
         {
             response = staticResponses.get(9);
         }
-        else if (findKeyword(statement, "How are you") >= 0)
+        else if (findKeyword(statement, "How are you") >= 0 || findKeyword(statement, "How about you") >= 0)
         {
             response = staticResponses.get(10);
         }
@@ -385,7 +385,8 @@ public class CatBot
         {
             response = transformWhyIs(statement);
         }
-        else if (findKeyword(statement, "what is the", 0) >= 0)
+        else if (findKeyword(statement, "what is", 0) >= 0 
+                 && findKeyword(statement, "your", 0) < 0)
         {
             response = transformWhatIs(statement);
         }
@@ -403,6 +404,10 @@ public class CatBot
         {
             response = transformWhatsYour(statement);
         }
+        else if (findKeyword(statement, "Why are") >= 0)
+        {
+            response = transformWhyAre(statement);
+        }
         else if(findKeyword(statement, "How do you") >= 0)
         {
             response = transformHowDoYou(statement);
@@ -410,6 +415,10 @@ public class CatBot
         else if(findKeyword(statement, "how to") >= 0)
         {
             response = transformHowTo(statement);
+        }
+        else if(findKeyword(statement, "I am") >= 0 && findKeyword(statement, "you") < 0)
+        {
+            response = transformIAm(statement);
         }
         else
         {
@@ -626,7 +635,7 @@ public class CatBot
         
         int psnOfAreYou = findKeyword (statement, "Do you", 0);
         String restOfStatement = statement.substring(psnOfAreYou + 6, statement.length()).trim();
-        return "What makes you think that I " + restOfStatement + "?\nJust wondering.";
+        return "What makes you think that I " + restOfStatement + "?";
     }
     
     /**
@@ -648,7 +657,7 @@ public class CatBot
         int psnOfAreYou = findKeyword (statement, "Do you", 0);
         int psnOfMe = findKeyword (statement, "me", statement.length() - 2);
         String restOfStatement = statement.substring(psnOfAreYou + 6, statement.length() - 2).trim();
-        return "What makes you think that I " + restOfStatement + " you?\nJust wondering.";
+        return "What makes you think that I " + restOfStatement + " you?";
     }
     
     /**
@@ -722,7 +731,7 @@ public class CatBot
     /**
      * Take a statement with "I am <something> you" and transform it into 
      * "Why are you <something> me?" 
-     * @param statement the user statement, assumed to contain "I am" followed by "you"
+     * @param statement the user statement, assumed to contain "I am" followed by "you".
      * @return the transformed statement
      */
     private String transformIAmYouStatement(String statement)
@@ -759,12 +768,12 @@ public class CatBot
         }
         int psnOfYouAlready = findKeyword(statement, "You already", 0);
         String restOfStatement = statement.substring(psnOfYouAlready + 11, statement.length());
-        return "Oh, I already " + restOfStatement + "? My a-paw-logies, I'm very fur-getful.";      
+        return "Oh, I already" + restOfStatement + "? My a-paw-logies, I'm very fur-getful.";      
     }
     
     /**
      * Take a statement with "How do you <something>?" and transform it into 
-     * "You want to know how I <something>? I'm not sure; tell me!\n Or google it; here's a link you can copy and paste:\n <link>" 
+     * "You want to know how I <something>? I'm not sure; tell me! Or google it; here's a link you can copy and paste:\n <link>" 
      * @param statement the user statement, assumed to contain "how do you".
      * @return the transformed statement
      */
@@ -779,12 +788,32 @@ public class CatBot
         }
         int psnOfHowDoYou = findKeyword(statement, "how do you", 0);
         String restOfStatement = statement.substring(psnOfHowDoYou + 10, statement.length());
-        return "You want to know how I " + restOfStatement + "? I'm not sure; tell me!\n Or google it; here's a link you can copy and paste:\n" + "https://www.google.com/search?q=" + restOfStatement;      
+        return "You want to know how I " + restOfStatement + "? I'm not sure; tell me!\nOr google it; here's a link you can copy and paste:\n" + "https://www.google.com/search?q=" + restOfStatement;      
     }
 
     /**
+     * Take a statement with "Why are <something>?" and transform it into 
+     * "You want to know why <something>? I'm not sure; tell me! Or google it; here's a link you can copy and paste:\n <link>" 
+     * @param statement the user statement, assumed to contain "why are".
+     * @return the transformed statement
+     */
+    private String transformWhyAre(String statement)
+    {
+        statement = statement.trim();
+        String lastChar = statement.substring(statement.length() - 1);
+        if (lastChar.equals(".") || lastChar.equals("!") || lastChar.equals("?"))
+        {
+            statement = statement.substring(0, statement
+                    .length() - 1);
+        }
+        int psnOfHowDoYou = findKeyword(statement, "why are", 0);
+        String restOfStatement = statement.substring(psnOfHowDoYou + 7, statement.length());
+        return statement + "? I'm not sure; tell me!\nOr google it; here's a link you can copy and paste:\n" + "https://www.google.com/search?q=" + statement;      
+    }
+    
+    /**
      * Take a statement with "Why is <something>?" and transform it into 
-     * "You want to know how I <something>? I'm not sure; tell me!\n Or google it; here's a link you can copy and paste:\n <link>" 
+     * "You want to why is <something>? Well, what do you think?\n Or google it; here's a link you can copy and paste:\n <link>" 
      * @param statement the user statement, assumed to contain "why is".
      * @return the transformed statement
      */
@@ -799,7 +828,7 @@ public class CatBot
         }
         int psnOfHowDoYou = findKeyword(statement, "why is", 0);
         String restOfStatement = statement.substring(psnOfHowDoYou + 6, statement.length());
-        return "You want to know why is " + restOfStatement + "?\nWell, what do you think?\n Or google it; here's a link you can copy and paste:\n" + "https://www.google.com/search?q=" + restOfStatement;      
+        return "You want to know why is" + restOfStatement + "?\nWell, what do you think?\n Or google it; here's a link you can copy and paste:\n" + "https://www.google.com/search?q=" + restOfStatement;      
     }
     
     /**
@@ -819,7 +848,27 @@ public class CatBot
         }
         int psnOfHowDoYou = findKeyword(statement, "you are", 0);
         String restOfStatement = statement.substring(psnOfHowDoYou + 7, statement.length());
-        return "Why do you think that I am " + restOfStatement + "?";      
+        return "Why do you think that I am" + restOfStatement + "?";      
+    }
+    
+    /**
+     * Take a statement with "I am <something>." and transform it into 
+     * "Why are you <something>?" 
+     * @param statement the user statement, assumed to contain "I am".
+     * @return the transformed statement
+     */
+    private String transformIAm(String statement)
+    {
+        statement = statement.trim();
+        String lastChar = statement.substring(statement.length() - 1);
+        if (lastChar.equals(".") || lastChar.equals("!") || lastChar.equals("?"))
+        {
+            statement = statement.substring(0, statement
+                    .length() - 1);
+        }
+        int psnOfHowDoYou = findKeyword(statement, "I am", 0);
+        String restOfStatement = statement.substring(psnOfHowDoYou + 4, statement.length());
+        return "Why are you" + restOfStatement + "?";      
     }
     
     /**
@@ -843,9 +892,9 @@ public class CatBot
     }
     
     /**
-     * Take a statement with "What is the <something>?" and transform it into 
-     * "You want to know what is the <something>? Try googling it; here's a link you can copy and paste:\n <link>" 
-     * @param statement the user statement, assumed to contain "what is the".
+     * Take a statement with "What is <something>?" and transform it into 
+     * "You want to know what <something> is? Try googling it; here's a link you can copy and paste:\n <link>" 
+     * @param statement the user statement, assumed to contain "what is".
      * @return the transformed statement
      */
     private String transformWhatIs(String statement)
@@ -857,9 +906,9 @@ public class CatBot
             statement = statement.substring(0, statement
                     .length() - 1);
         }
-        int psnOfHowDoYou = findKeyword(statement, "what is the", 0);
-        String restOfStatement = statement.substring(psnOfHowDoYou + 11, statement.length());
-        return "You want to what is " + restOfStatement + "? Try googling it; here's a link you can copy and paste:\n" + "https://www.google.com/search?q=" + restOfStatement;      
+        int psnOfHowDoYou = findKeyword(statement, "what is", 0);
+        String restOfStatement = statement.substring(psnOfHowDoYou + 7, statement.length());
+        return "You want to what" + restOfStatement + " is? Try googling it; here's a link you can copy and paste:\n" + "https://www.google.com/search?q=" + restOfStatement;      
     }
     
     /**
