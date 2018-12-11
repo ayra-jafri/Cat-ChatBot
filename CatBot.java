@@ -412,6 +412,14 @@ public class CatBot
         {
             response = transformHowDoYou(statement);
         }
+        else if(findKeyword(statement, "I like") >= 0 && findKeyword(statement, "because") < 0)
+        {
+            response = transformILike(statement);
+        }
+        else if(findKeyword(statement, "I") >= 0 && findKeyword(statement, "because") >= 0)
+        {
+            response = transformIBecause(statement);
+        }
         else if(findKeyword(statement, "how to") >= 0)
         {
             response = transformHowTo(statement);
@@ -832,6 +840,46 @@ public class CatBot
     }
     
     /**
+     * Take a statement with "I like <something>?" and transform it into 
+     * "Why do you like <something>?" 
+     * @param statement the user statement, assumed to contain "i like".
+     * @return the transformed statement
+     */
+    private String transformILike(String statement)
+    {
+        statement = statement.trim();
+        String lastChar = statement.substring(statement.length() - 1);
+        if (lastChar.equals(".") || lastChar.equals("!") || lastChar.equals("?"))
+        {
+            statement = statement.substring(0, statement
+                    .length() - 1);
+        }
+        int psnOfHowDoYou = findKeyword(statement, "i like", 0);
+        String restOfStatement = statement.substring(psnOfHowDoYou + 6, statement.length());
+        return "Why do you like" + restOfStatement + "?";      
+    }
+    
+    /**
+     * Take a statement with "I <something>?" and transform it into 
+     * "So you <something>? That's purr-ty interesting." 
+     * @param statement the user statement, assumed to contain "I" and "because".
+     * @return the transformed statement
+     */
+    private String transformIBecause(String statement)
+    {
+        statement = statement.trim();
+        String lastChar = statement.substring(statement.length() - 1);
+        if (lastChar.equals(".") || lastChar.equals("!") || lastChar.equals("?"))
+        {
+            statement = statement.substring(0, statement
+                    .length() - 1);
+        }
+        int psnOfI = findKeyword(statement, "I", 0);
+        String restOfStatement = statement.substring(psnOfI + 1, statement.length());
+        return "So you" + restOfStatement + "? That's purr-ty interesting.";      
+    }
+    
+    /**
      * Take a statement with "You are <something>." and transform it into 
      * "Why do you think that I am <something>?" 
      * @param statement the user statement, assumed to contain "you are".
@@ -910,6 +958,8 @@ public class CatBot
         String restOfStatement = statement.substring(psnOfHowDoYou + 7, statement.length());
         return "You want to what" + restOfStatement + " is? Try googling it; here's a link you can copy and paste:\n" + "https://www.google.com/search?q=" + restOfStatement;      
     }
+    
+    
     
     /**
      * Retrieves a random cat fact from catfat.ninja/fact (an API)
