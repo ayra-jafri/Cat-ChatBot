@@ -346,7 +346,7 @@ public class CatBot
         else if (findKeyword(statement, "joke", 0) >= 0 && (findKeyword(statement, "not", 0) < 0 
         || findKeyword(statement, "no", 0) < 0) /*&& jokeFlag == false*/)
         {
-            response = joke();
+            response = getList(jokes);
             //jokeFlag = true;
         }
         /*
@@ -453,7 +453,7 @@ public class CatBot
             }
             else
             {
-                response = getRandomResponse();
+                response = getList(randResponses);
             }
             
             int psn2 = findKeyword(statement, "I", 0);
@@ -1023,19 +1023,19 @@ public class CatBot
     }
     
     /**
-     * Retrieves a random cat joke from an arraylist of jokes
-     * There was no API available for cat jokes, sadly, so the number of jokes in the list are limited.
-     * @param statement the user statement, assumed to contain "joke"
-     * @return the transformed statement
+     * Retrieves a random string from the list passed
+     * Used for retrieving a random response or random joke
+     * @param List<String> list the list passed in
+     * @return the statement
      */
-    private String joke()
+    private String getList(List<String> list)
     {
-       int NUMBER_OF_RESPONSES = jokes.size();
+       int NUMBER_OF_RESPONSES = list.size();
        double r = Math.random();
-       int whichResponse = (int)(r * (jokes.size()-1));
+       int whichResponse = (int)(r * (list.size()-1));
        
-       String response = jokes.get(whichResponse);
-       return "I don't know too many jokes, but here's a purr-fectly fine joke!\n\n" + response;
+       String response = list.get(whichResponse);
+       return response;
     }
     
     /**
@@ -1055,18 +1055,5 @@ public class CatBot
     private int findKeyword(String statement, String goal)
     {
         return findKeyword(statement, goal, 0);
-    }
-    
-    /**
-     * Pick a default response to use if nothing else fits.
-     * @return a non-committal string
-     */
-    private String getRandomResponse()
-    {
-       final int NUMBER_OF_RESPONSES = randResponses.size();
-       double r = Math.random();
-       int whichResponse = (int)(r * (randResponses.size() - 1));
-       String response = randResponses.get(whichResponse);
-       return response;
     }
 }
